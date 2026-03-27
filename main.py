@@ -11,18 +11,12 @@ def main():
     parser.add_argument("format", choices=["json", "xml"], help="Output format")
     args = parser.parse_args()
 
-    db = DatabaseManager({"host": "localhost", "database": "university_db", "user": "postgres", "password": "Sashastar28"})
+    db = DatabaseManager()
     db.connect()
 
     # Smart Check: Only load if database is empty
     if db.select_query("SELECT COUNT(*) FROM students")[0][0] == 0:
         loader = JSONLoader()
-        rooms = loader.load_rooms(args.rooms)
-        #if db.select_query("SELECT COUNT(*) FROM students")[0][0] == 0:
-        print("Database is empty. Starting ingestion...")
-        loader = JSONLoader()
-        
-        # Load objects from JSON
         rooms = loader.load_rooms(args.rooms)
         students = loader.load_students(args.students)
 
